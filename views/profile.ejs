@@ -1,0 +1,65 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= user.local.name %> Email Application</title>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <style>
+      table { border-collapse: collapse;
+              border: 2px black solid;
+              font: 12px sans-serif;
+      }
+      td { border: 1px black solid;
+           padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Welcome, <%= user.local.name %></h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/send" class="btn btn-default">Send</a>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="well">
+        <h3>Inbox</h3>
+        <p>
+          <table class="table table-striped table-hover">
+            <tr>
+              <% var emailPath = user.local.email+'_index.txt'%>
+              <% var array = new Array(); %>
+              <% array = readFile(user.local.email,emailPath) %>
+              <% var tempString = array[0] %>
+              <% if(array.length > 0 && tempString != "") { %>
+                <p>Inbox size: </p><%= array.length %>
+                <%= user.local.email %>
+                <th>From</th><th>Subject</th><th></th>
+            </tr>
+              <% for(i=0; i<array.length; i++) { %>
+            <tr>
+              <% var tempString = array[i] %>
+              <% var tempArray = new Array() %>
+              <% tempArray = tempString.split(":") %>
+              <td><%= tempArray[0] %></td>
+              <td><%= tempArray[1].replace(/&&&/g,':').replace(/%%%/g," ") %>
+              </td>
+              <td>
+                <form action="/email" method="post">
+                  <input type="hidden" name="fromEmail" value=<%= tempArray[0] %>>
+                  <input type="hidden" name="subject" value=<%= tempArray[1].replace(/:/g,'&&&').replace(/ /g, '%%%') %>>
+                  <input type="hidden" name="emailID" value =<%= tempArray[2] %>>
+                  <input type="submit" value = "Open">
+                </form>
+              </td>
+            </tr>
+              <% } %>
+              <%} else {%>
+            <tr> No Emails!</tr>
+              <%}%>
+          <table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

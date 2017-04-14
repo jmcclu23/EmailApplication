@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= user.local.name %> Email Application</title>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Welcome, <%= user.local.name %></h1>
+        <a href="/profile" class="btn btn-default btn-sm">Inbox</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="well">
+        <form action="/send" method="post">
+          <p>To:
+            <input type="text" name="toID" value = <%= from %>
+              readonly></p></br>
+          <p>From:
+            <input type="text" name="fromID" value = <%= user.local.email %>
+              readonly></p></br>
+          <% var replySubject = 'Reply:' %>
+          <% replySubject += subject %>
+          <p>Subject:
+            <input type="text" name="subject" value = <%= replySubject %>
+            readonly></p></br>
+            <p>Previous Message:</p>
+              <textarea cols="50" rows="4" readonly>
+                &#13;<%= decryptedText %></textarea>
+          </br>
+          </br>
+          <P>Reply:</p>
+          </br>
+          <textarea cols="50" rows="4" name="emailBody">
+          </textarea>
+          </br>
+          <input type="submit" value = "Reply">
+        </form>
+    </div>
+  </div>
+  </body>
+</html>
