@@ -29,6 +29,7 @@ var configDB     = require('./config/database');
 var fs           = require('fs');
 //setup app to encrypt/decrypt functions
 var openpgp      = require('openpgp');
+var async = require("async");
 //Setup app to read passport configuration
 require('./config/passport')(passport);
 //******************************************************************************
@@ -140,6 +141,7 @@ app.post('/email', isLoggedIn, function(req, res) {
 app.post('/reply', isLoggedIn, function(req, res) {
   var emailID = req.body.emailID;
   var toEmail = req.body.fromID;
+  var from    = req.body.toID;
   var subject = req.body.subject;
   var body    = req.body.body;
   res.render('reply.ejs', {
@@ -147,6 +149,7 @@ app.post('/reply', isLoggedIn, function(req, res) {
     req     : req,
     emailID : emailID,
     toEmail : toEmail,
+    from    : from,
     subject : subject,
     body    : body
   });
@@ -173,19 +176,56 @@ app.post('/decrypt', isLoggedIn, function(req, res) {
     message: openpgp.message.readArmored(encrypted),     // parse armored message
     privateKey: privKeyObj // for decryption
   };
-  openpgp.decrypt(options).then(function(plaintext) {
-    app.locals.writeFile(emailTo,"temp",plaintext.data);
-    return plaintext.data; // 'Hello, World!'
-  });
-  decryptedTextArray = app.locals.readFile(emailTo,"temp.txt");
-  decryptedText = decryptedTextArray .toString();
-  res.render('reply.ejs', {
+  async.series([
+    function(callback){
+      openpgp.decrypt(options).then(function(plaintext) {
+        app.locals.writeFile(emailTo,"temp",plaintext.data);
+      return plaintext.data; // 'Hello, World!'
+    });
+    console.log("Decrypted");
+    callback(null,'decrypt');
+  },
+    function(callback){
+      var emailPath = './Users/'+emailTo+'/temp.txt'
+      //decryptedTextArray = app.locals.readFile(emailTo,"temp.txt");
+      fs.readFile(emailPath, 'utf8', (err, data) => {
+        if (err) throw err;
+        console.log(data);
+        decryptedText = data.toString();
+      });
+      callback(null,'read');
+    },
+    function(callback){
+      app.locals.writeFile(emailTo,"temp"," ");
+      callback(null,'erase');
+    }
+  ]);;
+  async.series({
+    decrypt: function(callback){
+      setTimeout(function() {
+            callback(null, 1);
+        }, 300);
+    },
+    read: function(callback){
+       setTimeout(function() {
+            callback(null, 1);
+        }, 200);
+    },
+    erase: function(callback){
+        setTimeout(function() {
+            callback(null, 3);
+        }, 100);
+    }
+}, function(err, results) {
+  res.render('decryptedemail.ejs', {
     user          : req.user, // get the user out of session and pass to template
     emailTo       : emailTo,
     from          : from,
     subject       : subject,
     decryptedText : decryptedText
-  });
+});
+});
+
 });
 app.post('/send', isLoggedIn, function(req, res) {
   var timeStamp = Math.floor(Date.now() / 1000);
@@ -193,7 +233,6 @@ app.post('/send', isLoggedIn, function(req, res) {
   var emailTo = req.body.toID;        //to email
   var emailFrom = req.body.fromID;
   var subject = req.body.subject;
-  app.locals.writeFile(emailFrom,"temp","");
   arrayPublicKey = new Array();
   var filename = emailTo+"_public.txt";
   arrayPublicKey = app.locals.readFile(emailTo,filename);
