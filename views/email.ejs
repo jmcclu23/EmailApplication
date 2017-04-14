@@ -1,0 +1,46 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= user.local.name %> Email Application</title>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Welcome, <%= user.local.name %></h1>
+        <a href="/profile" class="btn btn-default btn-sm">Inbox</a>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="well">
+        <% var array = new Array(); %>
+        <% array = readFile(user.local.email,emailID) %>
+        <% for(i=0; i<array.length; i++) { %>
+          <% var tempString = array[i] %>
+          <% var tempArray = new Array() %>
+          <% var encryptedString = new String() %>
+          <% tempArray = tempString.split(":") %>
+        <% } %>
+        <h3>Inbox</h3>
+        <p>To: <%=user.local.email %></p>
+        <p>From: <%= from %></p>
+        <p>Subject: <%= subject.replace(/&&&/g,':').replace(/%%%/g, ' ') %> </p>
+        <% for(i = 0; i<tempArray.length; i++){ %>
+          <% tempArray[i].replace(/%%%/g,' ').replace(/&&&/g,':') %></P>
+          <% encryptedString +=tempArray[i].replace(/%%%/g,' ').replace(/&&&/g,':') %>
+          <p><%= encryptedString %></p>
+        <% } %>
+        <form action="/decrypt" method="post">
+          <input type="hidden" name="emailID" value =<%= emailID %>>
+          <input type="hidden" name="emailTo" value=<%= user.local.email %>>
+          <input type="hidden" name="fromID" value =<%= from %>>
+          <input type="hidden" name="subject" value =<%= subject %>>
+          <p>Please input secret phrase:</p><input type = "text" name="secret">
+          </br>
+          <input type="submit" value = "decrypt">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

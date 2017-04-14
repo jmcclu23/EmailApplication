@@ -1,26 +1,19 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <title>My APP</title>
+    <title>Emaill Application</title>
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
-</head>
-<body>
-    <div>
-      <h1><%= title %></h1>
-      <%= new Date() %>
-      <br/>
-      <ul>
-          <% for (var i = 0; i<items.length; i++){%>
-            <li><%= items[i].desc %></li>
-          <% } %>
-      </ul>
-      <form action="/add" method="post">
-          <input type="text" name="newItem">
-          <input type="submit">
-      </form>
-    </div>
-    <script src="jquery/dist/jquery.js"></script>
-    <script src ="bootstrap/dist/js/bootstrap.js"></script>
-</body>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h2>Joshua McClure's PGP Email System</h2>
+        <a href="/login" class="btn btn-default">Login</a>
+        <a href="/signup" class="btn btn-default">Signup</a>
+      </div>
+  </div>
+  <script src="jquery/dist/jquery.js"></script>
+  <script src ="bootstrap/dist/js/bootstrap.js"></script>
+  </body>
 </html>

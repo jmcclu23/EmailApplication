@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= user.local.name %> Email Application</title>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Welcome, <%= user.local.name %></h1>
+      </div>
+    </div>
+  </br>
+    <div class="col-sm-12">
+      <div class="well">
+        <h2>Please continue your email setup here</h2>
+        <h3>This form will generate public and private keys for PGP encryption</h3>
+        <form action="/setup" method="post">
+          <p>Email: <input type="text" name="emailID" value= <%= user.local.email %> readonly></p>
+          <p>Email: <input type="text" name="name" value= <%= user.local.name %> readonly></p>
+          <p>Secret Passphrase: <input type="text" name="secret"></p>
+          <p>*Please wait a moment after submission*</br>*keys will take a moment to generate*</p>
+          <input type="submit" value = "Create Keys">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
