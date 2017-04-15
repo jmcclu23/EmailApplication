@@ -182,7 +182,7 @@ app.post('/decrypt', isLoggedIn, function(req, res) {
         app.locals.writeFile(emailTo,"temp",plaintext.data);
       return plaintext.data; // 'Hello, World!'
     });
-    console.log("Decrypted");
+    console.log("Step 1: decrypt");
     callback(null,'decrypt');
   },
     function(callback){
@@ -190,8 +190,9 @@ app.post('/decrypt', isLoggedIn, function(req, res) {
       //decryptedTextArray = app.locals.readFile(emailTo,"temp.txt");
       fs.readFile(emailPath, 'utf8', (err, data) => {
         if (err) throw err;
-        console.log(data);
-        decryptedText = data.toString();
+        console.log("Step 2: read decrypted email");
+        console.log(data.toString());
+        decryptedText = data;
       });
       callback(null,'read');
     },

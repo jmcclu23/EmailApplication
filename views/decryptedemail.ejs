@@ -23,12 +23,12 @@
           </p></br>
           <% var replySubject = 'Reply:' %>
           <% replySubject += subject %>
-          <p>Subject: <%= replySubject %>
+          <p>Subject: <%= subject %>
             <input type="hidden" name="subject" value = <%= replySubject %>>
           </p></br>
           <textarea cols="50" rows="4" name = "body" style="display:none;">
               &#13;<%= decryptedText %></textarea>
-          <p><%= decryptedText %></p>
+          <p><%= decryptedText.toString()%></p>
           </br>
           <input type="submit" value = "Reply">
         </form>
