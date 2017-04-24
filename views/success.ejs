@@ -1,20 +1,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= user.local.name %> Email Application</title>
+  <title><%= title %></title>
   <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
   </head>
   <body>
     <div class="container">
       <div class="page-header text-center">
         <h1>Welcome, <%= user.local.name %></h1>
-        <a href="/profile" class="btn btn-default btn-sm">Inbox</a>
+        <a href="/inbox" class="btn btn-default btn-sm">Inbox</a>
+        <a href="/send" class="btn btn-default btn-sm">New Email</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
       </div>
     </div>
     <div class="col-sm-12">
       <div class="well">
-        <h3>Success!<h3>
+        <p>Account: <%= user.local.email %> </p></br>
+        <h2>Success!<h2>
+          <h3>Click <a href='/inbox'>Here</a> to return to inbox <h3>
         </div>
     </div>
   </body>

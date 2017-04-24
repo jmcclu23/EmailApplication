@@ -1,7 +1,20 @@
+<!--***************************************************************************
+//     Application: Email Application
+//     Author:      Joshua McClure(jmcclu23)
+//     Date:        2017-04-23
+//     File:        setup.ejs
+//     Description: setup form to input passphrase to create public/private keys
+//*****************************************************************************
+//     History
+//*****************************************************************************
+// Date         Version     User       Description
+//2017-04-23      1.0     jmcclu23     Initial Commit, new program
+-->
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title><%= user.local.name %> Email Application</title>
+    <title><%= title %></title>
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
   </head>
   <body>
@@ -17,7 +30,7 @@
         <h3>This form will generate public and private keys for PGP encryption</h3>
         <form action="/setup" method="post">
           <p>Email: <input type="text" name="emailID" value= <%= user.local.email %> readonly></p>
-          <p>Email: <input type="text" name="name" value= <%= user.local.name %> readonly></p>
+          <p>Name: <input type="text" name="name" value= <%= user.local.name %> readonly></p>
           <p>Secret Passphrase: <input type="text" name="secret"></p>
           <p>*Please wait a moment after submission*</br>*keys will take a moment to generate*</p>
           <input type="submit" value = "Create Keys">
